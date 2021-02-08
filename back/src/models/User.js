@@ -1,0 +1,63 @@
+import {model, Schema} from "mongoose"
+import mongooseIdValidator from "mongoose-id-validator"
+import bcrypt from "bcrypt"
+import config from "../config";
+import {nanoid} from "nanoid"
+
+const UserSchema = new Schema({
+    login: {
+        type: String,
+        required: true,
+        unique: true,
+        validate: {
+            validator: async function (login) {
+                if (this.isNew) {
+                    const user = await User.findOne({login})
+                    return !user
+                }
+                return true
+            },
+            message: "This login don't allowed"
+        }
+    },
+    name: {
+        type: String,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true,
+        private: true,
+        minlength: [3, "Password very easy"]
+    },
+    token: {
+        type: String,
+        default: nanoid
+    },
+    facebookId: Number,
+})
+UserSchema.set("toJSON", {
+    transform(doc, ret) {
+        delete ret.password
+        delete ret.__v
+        return ret
+    }
+})
+
+UserSchema.pre("save", async function (next) {
+    if (!this.isModified("password")) return next();
+    const salt = await bcrypt.genSalt(config.saltLevel)
+    this.password = await bcrypt.hash(this.password, salt)
+    next()
+})
+
+UserSchema.methods.checkPassword = function (password) {
+    return bcrypt.compare(password, this.password)
+}
+UserSchema.methods.updateToken = function () {
+    this.token = nanoid()
+}
+UserSchema.plugin(mongooseIdValidator)
+const User = model("User", UserSchema)
+
+export default User;
