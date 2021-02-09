@@ -5,8 +5,8 @@ class UsersController {
 
     async create(req, res) {
         try {
-            const {name, password, login} = req.body
-            const newUser = new User({name, password, login})
+            const {name, password, email} = req.body
+            const newUser = new User({name, password, email})
             const errors = newUser.validateSync()
             if (errors) return res.status(400).json(errors)
             await newUser.save()
@@ -19,8 +19,8 @@ class UsersController {
     async sessions(req, res) {
         try {
             const msg = "Not found, please try"
-            const {password, login} = req.body
-            const candidate = await User.findOne({login})
+            const {password, email} = req.body
+            const candidate = await User.findOne({email})
             if (!candidate) return res.status(404).json({msg})
             const passIsMatch = await candidate.checkPassword(password)
             if (!passIsMatch) return res.status(404).json({msg})
@@ -65,7 +65,7 @@ class UsersController {
             let user = await User.findOne({facebookId: req.body.id})
             if (!user) {
                 user = new User({
-                    login: req.body.email,
+                    email: req.body.email,
                     password: nanoid(),
                     facebookId: req.body.id,
                     name: req.body.name,

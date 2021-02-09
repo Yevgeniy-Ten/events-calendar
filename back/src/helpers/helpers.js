@@ -1,1 +1,1 @@
-export const toString = (type, data) => JSON.stringify({type, data})
+export const toWSString = (type, data) => JSON.stringify({type, data})

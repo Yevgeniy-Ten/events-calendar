@@ -5,19 +5,19 @@ import config from "../config";
 import {nanoid} from "nanoid"
 
 const UserSchema = new Schema({
-    login: {
+    email: {
         type: String,
         required: true,
         unique: true,
         validate: {
-            validator: async function (login) {
+            validator: async function (email) {
                 if (this.isNew) {
-                    const user = await User.findOne({login})
+                    const user = await User.findOne({email})
                     return !user
                 }
                 return true
             },
-            message: "This login don't allowed"
+            message: "This email don't allowed"
         }
     },
     name: {

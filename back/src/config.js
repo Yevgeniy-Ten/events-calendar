@@ -1,8 +1,8 @@
 const config = {
     PORT: 3003,
     facebookApp: {
-        id: 569977460625464,
-        key: "0c6f0aad11c6a09213adbce905868da5",
+        id: 336631404238833,
+        key: "f026515fd9ce11c72168f811dc5ed81b",
         accessToken() {
             return this.id + "|" + this.key
         }
