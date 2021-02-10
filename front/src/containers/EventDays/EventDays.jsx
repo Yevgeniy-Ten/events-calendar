@@ -2,9 +2,10 @@ import React, {useEffect, useState} from "react";
 import {Grid, CircularProgress, Typography, makeStyles} from "@material-ui/core";
 import HeaderBar from "../HeaderBar/HeaderBar";
 import DateElement from "../../components/DateElement/DateElement";
-import {useDispatch, useSelector} from "react-redux";
+import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {getDayEvents, removeEvent} from "../../reducers/events/eventsActions";
 import EventsList from "../../components/EventsList/EventsList";
+import EventShare from "../EventShare/EventShare";
 
 const useStyles = makeStyles({
     center: {
@@ -14,12 +15,12 @@ const useStyles = makeStyles({
 
 const EventDays = () => {
     const [date, changeDate] = useState(new Date())
-    const {events, loading} = useSelector(state => state.events)
+    const {events, loading, friendsEvents} = useSelector(state => state.events, shallowEqual)
     const classes = useStyles()
     const dispatch = useDispatch()
     const onRemove = (eventID) => dispatch(removeEvent(eventID))
     useEffect(() => {
-        dispatch(getDayEvents(new Date(date).toJSON()))
+        dispatch(getDayEvents(date.toJSON()))
     }, [date, dispatch])
     return (
         <>
@@ -30,6 +31,11 @@ const EventDays = () => {
                 </Grid>
                 <Grid item xs={12}>
                     <Grid container justify={"center"}>
+                        <Grid xs={12} className={classes.center}>
+                            <Typography
+                                align={"center"}
+                                variant={"h6"}>Your events</Typography>
+                        </Grid>
                         <Grid xs={6} className={classes.center}>
                             {
                                 loading ?
@@ -42,7 +48,24 @@ const EventDays = () => {
                         </Grid>
                     </Grid>
                 </Grid>
+                {
+                    friendsEvents.map((friendEvents) => (
+                        <Grid key={friendEvents[0]._id} item xs={12}>
+                            <Grid container justify={"center"}>
+                                <Grid xs={12} className={classes.center}>
+                                    <Typography
+                                        align={"center"}
+                                        variant={"h6"}>{friendEvents[0].author.name} events</Typography>
+                                </Grid>
+                                <Grid xs={6} className={classes.center}>
+                                    <EventsList notActions={true} onRemove={onRemove} events={friendEvents}/>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    ))
+                }
             </Grid>
+            <EventShare/>
         </>
     );
 };

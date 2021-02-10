@@ -11,7 +11,7 @@ const EventSchema = new Schema({
     name: {
         type: String,
         required: true,
-        maxlength: [255, "Name is long"]
+        maxlength: [128, "Name is long"]
     },
     duration: {
         type: String,
@@ -20,12 +20,8 @@ const EventSchema = new Schema({
     },
     date: {
         type: Date,
-        required: true
-    },
-    showingFor: [{
-        type: Types.ObjectId,
-        ref: "User"
-    }]
+        required: true,
+    }
 })
 EventSchema.plugin(mongooseIdValidator)
 const Event = model("Event", EventSchema)

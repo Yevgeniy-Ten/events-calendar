@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Grid, Button, makeStyles, Typography} from "@material-ui/core";
 import {Link} from "react-router-dom"
-import {useDispatch, useSelector} from "react-redux";
+import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import useForm from "../../hooks/useForm";
 import {createEvent} from "../../reducers/events/eventsActions";
 import EventCreateForm from "../../components/EventCreateForm/EventCreateForm";
@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 const EventCreate = () => {
     const classes = useStyles()
     const dispatch = useDispatch()
-    const {loading, errors, isCreated} = useSelector(state => state.events)
+    const {loading, errors, isCreated} = useSelector(state => state.events, shallowEqual)
     const [selectedDate, handleDateChange] = useState(new Date());
     const {values, binder, clearForm} = useForm({
         duration: "",

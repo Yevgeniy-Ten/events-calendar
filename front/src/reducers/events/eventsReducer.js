@@ -4,14 +4,15 @@ import {
     CREATE_EVENT_SUCCESS,
     GET_EVENTS,
     GET_EVENTS_ERROR,
-    GET_EVENTS_SUCCESS
+    GET_EVENTS_SUCCESS,
 } from "./eventsTypes";
 
 const initialState = {
     events: [],
     errors: null,
     loading: false,
-    isCreated: false
+    isCreated: false,
+    friendsEvents: []
 }
 
 const eventsReducer = (state = initialState, action) => {
@@ -25,7 +26,7 @@ const eventsReducer = (state = initialState, action) => {
         case GET_EVENTS:
             return {...initialState, loading: true}
         case GET_EVENTS_SUCCESS:
-            return {...initialState, events: action.payload}
+            return {...initialState, events: action.payload.events, friendsEvents: action.payload.friendsEvents}
         case GET_EVENTS_ERROR:
             return {...initialState}
         default:

@@ -4,15 +4,16 @@ import {
     axiosCreateEvent, axiosGetEvents,
     axiosRemoveEvent, createEventError, createEventSuccess, getDayEventsError, getDayEventsSuccess,
     removeEventError,
-    removeEventSuccess
+    removeEventSuccess,
 } from "../../reducers/events/eventsActions";
+
 
 function* removeEventWorker({payload: eventID}) {
     try {
         const response = yield call(axiosRemoveEvent, eventID)
         yield put(removeEventSuccess(response.data.id))
     } catch {
-        removeEventError({msg: "Some error when deleting"})
+        yield put(removeEventError({msg: "Some error when deleting"}))
     }
 }
 
@@ -40,6 +41,6 @@ function* getEventsWorker({payload: date}) {
 
 export function* eventsWatcher() {
     yield takeEvery(CREATE_EVENT, createEventWorker)
-    yield  takeEvery(REMOVE_EVENT, removeEventWorker)
-    yield  takeEvery(GET_EVENTS, getEventsWorker)
+    yield takeEvery(REMOVE_EVENT, removeEventWorker)
+    yield takeEvery(GET_EVENTS, getEventsWorker)
 }

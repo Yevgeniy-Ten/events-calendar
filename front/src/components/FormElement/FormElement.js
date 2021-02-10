@@ -28,6 +28,7 @@ const CssTextField = withStyles(theme => ({
 }))(TextField);
 
 const FormElement = ({
+                         size,
                          name,
                          label,
                          value,
@@ -50,7 +51,7 @@ const FormElement = ({
             ))
         }
         return (
-            <Grid item xs={12}>
+            <Grid item xs={size || 12}>
                 <CssTextField
                     multiline={multiline}
                     rows={rows}

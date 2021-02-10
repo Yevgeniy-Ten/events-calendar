@@ -3,11 +3,8 @@ import {
     ListItem,
     makeStyles,
     ListItemText,
-    ListItemSecondaryAction,
-    Button,
-    Menu,
-    MenuItem
 } from "@material-ui/core";
+import EventItemActions from "./EventItemActions";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -20,17 +17,9 @@ const useStyles = makeStyles(theme => ({
         color: theme.palette.info.main
     }
 }))
-const EventsItem = ({name, duration, createdDate, onRemove}) => {
+const EventsItem = ({name, duration, createdDate, onRemove, notActions}) => {
     const classes = useStyles()
-    const [anchorEl, setAnchorEl] = React.useState(null);
 
-    const handleClick = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
     const dateInTime = new Date(createdDate).toLocaleTimeString()
     return (
         <ListItem className={classes.root}>
@@ -38,19 +27,7 @@ const EventsItem = ({name, duration, createdDate, onRemove}) => {
                           secondaryTypographyProps={{
                               className: classes.color
                           }}/>
-            <ListItemSecondaryAction>
-                <Button variant={"contained"} onClick={handleClick}>
-                    Menu
-                </Button>
-                <Menu id="simple-menu"
-                      anchorEl={anchorEl}
-                      keepMounted
-                      open={Boolean(anchorEl)}
-                      onClose={handleClose}>
-                    <MenuItem onClick={handleClose}>Redding</MenuItem>
-                    <MenuItem onClick={onRemove}>Delete</MenuItem>
-                </Menu>
-            </ListItemSecondaryAction>
+            {!notActions && <EventItemActions onRemove={onRemove}/>}
         </ListItem>
     );
 };

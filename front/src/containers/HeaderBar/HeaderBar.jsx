@@ -1,6 +1,8 @@
 import React from "react";
 import {Link} from "react-router-dom"
 import {AppBar, Button, makeStyles, Toolbar, Typography} from "@material-ui/core";
+import {useDispatch} from "react-redux";
+import {OPEN_DRAWER} from "../../reducers/shareReducer/shareTypes";
 
 const useStyles = makeStyles(theme => ({
     title: {
@@ -21,6 +23,8 @@ const useStyles = makeStyles(theme => ({
 }));
 const HeaderBar = () => {
     const classes = useStyles()
+    const dispatch = useDispatch()
+    const openDrawer = () => dispatch({type: OPEN_DRAWER})
     return (
         <AppBar position={"fixed"} className={classes.appBar} color={"default"}>
             <Toolbar>
@@ -30,7 +34,8 @@ const HeaderBar = () => {
                 <Button size={"large"} to={"/event/creator"}
                         component={Link} variant={"contained"}
                         className={classes.createBtn}>+</Button>
-                <Button color="inherit">Logout</Button>
+                <Button onClick={openDrawer} color="inherit">SHARE WITH</Button>
+                <Button color="secondary">Logout</Button>
             </Toolbar>
         </AppBar>
     );

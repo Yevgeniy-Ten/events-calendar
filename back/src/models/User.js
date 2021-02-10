@@ -1,4 +1,4 @@
-import {model, Schema} from "mongoose"
+import {model, Schema, Types} from "mongoose"
 import mongooseIdValidator from "mongoose-id-validator"
 import bcrypt from "bcrypt"
 import config from "../config";
@@ -35,6 +35,18 @@ const UserSchema = new Schema({
         default: nanoid
     },
     facebookId: Number,
+    friends: [
+        {
+            type: Types.ObjectId,
+            ref: "User"
+        }
+    ],
+    events: [
+        {
+            type: Types.ObjectId,
+            ref: "Event"
+        }
+    ]
 })
 UserSchema.set("toJSON", {
     transform(doc, ret) {
