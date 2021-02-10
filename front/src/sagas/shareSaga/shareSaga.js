@@ -7,6 +7,7 @@ import {
     eventShareSuccess, getUserFriends, getUserFriendsError, getUserFriendsSuccess
 } from "../../reducers/shareReducer/shareActions";
 import {DELETE_USER_FRIEND, GET_USER_FRIENDS, SHARE_EVENT} from "../../reducers/shareReducer/shareTypes";
+import {getDayEvents} from "../../reducers/events/eventsActions";
 
 function* deleteUserFriendWorker({payload: userId}) {
     try {
@@ -31,6 +32,7 @@ function* shareWithUserWorker({payload: email}) {
         const response = yield call(axiosEventShare, email)
         yield put(eventShareSuccess(response.data))
         yield put(getUserFriends())
+        yield put(getDayEvents(new Date().toJSON()))
     } catch (e) {
         if (e.response && e.response.data) {
             yield put(eventShareError({msg: e.response.data.msg}))

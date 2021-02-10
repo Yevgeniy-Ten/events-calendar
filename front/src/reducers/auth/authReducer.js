@@ -2,7 +2,7 @@ import {
     AUTH_REQUEST_ERROR,
     FACEBOOK_SIGN_USER,
     LOGIN_USER,
-    LOGIN_USER_SUCCESS,
+    LOGIN_USER_SUCCESS, LOGOUT_USER_SUCCESS,
     REGISTER_USER,
     REGISTER_USER_SUCCESS
 } from "./authTypes";
@@ -27,6 +27,8 @@ const authReducer = (state = initialState, action) => {
             return {...initialState, user: action.payload}
         case AUTH_REQUEST_ERROR:
             return {...state, errors: action.payload, loading: false}
+        case LOGOUT_USER_SUCCESS:
+            return {...initialState}
         default: {
             return state
         }

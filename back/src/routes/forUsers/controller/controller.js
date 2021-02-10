@@ -125,6 +125,7 @@ class UsersController {
                 })
                 const errors = user.validateSync()
                 if (errors) return res.status(400).json(errors)
+                await user.save()
                 return res.json(user)
             }
             user.updateToken()

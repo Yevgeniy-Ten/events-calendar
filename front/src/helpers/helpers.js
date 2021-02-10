@@ -5,3 +5,6 @@ export const getFieldError = (errors, fieldName) => {
         return null
     }
 }
+export const noop = () => {
+
+}

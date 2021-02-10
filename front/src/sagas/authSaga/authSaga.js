@@ -1,13 +1,18 @@
 import {put, takeEvery, call} from "redux-saga/effects"
-import {FACEBOOK_SIGN_USER, LOGIN_USER, REGISTER_USER} from "../../reducers/auth/authTypes";
+import {FACEBOOK_SIGN_USER, LOGIN_USER, LOGOUT_USER, REGISTER_USER} from "../../reducers/auth/authTypes";
 import {
     axiosFacebookSign,
     axiosLoginUser,
     axiosRegisterUser,
     loginUserSuccess,
     authRequestError,
-    registerUserSuccess
+    registerUserSuccess, axiosLogoutUser, logoutUserSuccess
 } from "../../reducers/auth/authActions";
+
+function* logoutUserWorker() {
+    yield call(axiosLogoutUser)
+    yield put(logoutUserSuccess())
+}
 
 function* facebookSingWorker({payload: user}) {
     try {
@@ -54,4 +59,5 @@ export function* authWatcher() {
     yield takeEvery(FACEBOOK_SIGN_USER, facebookSingWorker)
     yield takeEvery(LOGIN_USER, loginWorker)
     yield takeEvery(REGISTER_USER, registerWorker)
+    yield takeEvery(LOGOUT_USER, logoutUserWorker)
 }

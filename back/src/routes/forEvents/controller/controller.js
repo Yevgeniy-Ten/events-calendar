@@ -9,6 +9,8 @@ const getEventsFromDay = async (author, startDay, endDay) => {
                 $gte: startDay,
                 $lte: endDay,
             }
+        }).sort({
+            date: -1
         }).populate("author", "name").exec()
     } catch (e) {
         throw e
@@ -57,6 +59,20 @@ class EventController {
                 events,
                 friendsEvents
             })
+        } catch (e) {
+            return res.sendStatus(500)
+        }
+    }
+
+    async delete(req, res) {
+        try {
+            const {id} = req.params
+            const eventOnRemove = await Event.findById(id)
+            if (!eventOnRemove) return res.sendStatus(404)
+            const isUserMatch = eventOnRemove.author.equals(req.user._id)
+            if (!isUserMatch) return res.sendStatus(400)
+            const result = await eventOnRemove.deleteOne()
+            res.json({id: result._id})
         } catch (e) {
             return res.sendStatus(500)
         }

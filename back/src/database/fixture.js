@@ -24,33 +24,33 @@ db.once("open", async () => {
     const [event1, event2, event3, event4, event5, event6] = await Event.create({
             name: "Прогулка",
             duration: "60 seconds",
-            date: Date.now(),
+            date: new Date().toJSON(),
             author: admin._id
         },
         {
             name: "Прогулка",
             duration: "60 seconds",
-            date: Date.now(),
+            date: new Date().toJSON(),
             author: admin._id
         }, {
             name: "Прогулка",
             duration: "60 seconds",
-            date: Date.now(),
+            date: new Date().toJSON(),
             author: admin._id
         }, {
             name: "Прогулка",
             duration: "60 seconds",
-            date: Date.now(),
+            date: new Date().toJSON(),
             author: client._id
         }, {
             name: "Прогулка",
             duration: "60 seconds",
-            date: Date.now(),
+            date: new Date().toJSON(),
             author: client._id
         }, {
             name: "Прогулка",
             duration: "60 seconds",
-            date: Date.now(),
+            date: new Date().toJSON(),
             author: client._id
         })
     await admin.updateOne({

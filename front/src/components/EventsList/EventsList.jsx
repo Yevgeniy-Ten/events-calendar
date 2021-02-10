@@ -8,7 +8,7 @@ const EventsList = ({events, onRemove, notActions}) => {
             {events.map((event, i) => <EventsItem key={event._id}
                                                   notActions={notActions}
                                                   onRemove={onRemove.bind(null, event._id)}
-                                                  createdDate={event.createdDate}
+                                                  date={event.date}
                                                   duration={event.duration}
                                                   name={event.name}/>)}
         </List>

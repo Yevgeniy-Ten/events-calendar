@@ -17,10 +17,10 @@ const useStyles = makeStyles(theme => ({
         color: theme.palette.info.main
     }
 }))
-const EventsItem = ({name, duration, createdDate, onRemove, notActions}) => {
+const EventsItem = ({name, duration, date, onRemove, notActions}) => {
     const classes = useStyles()
 
-    const dateInTime = new Date(createdDate).toLocaleTimeString()
+    const dateInTime = new Date(date).toLocaleTimeString()
     return (
         <ListItem className={classes.root}>
             <ListItemText primary={name} secondary={`Duration of the event ${duration}, in ${dateInTime}`}

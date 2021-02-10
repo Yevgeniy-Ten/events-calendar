@@ -3,6 +3,7 @@ import {Link} from "react-router-dom"
 import {AppBar, Button, makeStyles, Toolbar, Typography} from "@material-ui/core";
 import {useDispatch} from "react-redux";
 import {OPEN_DRAWER} from "../../reducers/shareReducer/shareTypes";
+import {logoutUser} from "../../reducers/auth/authActions";
 
 const useStyles = makeStyles(theme => ({
     title: {
@@ -25,6 +26,7 @@ const HeaderBar = () => {
     const classes = useStyles()
     const dispatch = useDispatch()
     const openDrawer = () => dispatch({type: OPEN_DRAWER})
+    const onLogout = () => dispatch(logoutUser())
     return (
         <AppBar position={"fixed"} className={classes.appBar} color={"default"}>
             <Toolbar>
@@ -35,7 +37,7 @@ const HeaderBar = () => {
                         component={Link} variant={"contained"}
                         className={classes.createBtn}>+</Button>
                 <Button onClick={openDrawer} color="inherit">SHARE WITH</Button>
-                <Button color="secondary">Logout</Button>
+                <Button onClick={onLogout} color="secondary">Logout</Button>
             </Toolbar>
         </AppBar>
     );

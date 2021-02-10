@@ -7,6 +7,7 @@ const eventsRoute = Router()
 
 eventsRoute.post("/", authMiddleware, EventController.create)
 eventsRoute.get("/", authMiddleware, EventController.get)
+eventsRoute.delete("/:id", authMiddleware, EventController.delete)
 
 
 export default eventsRoute

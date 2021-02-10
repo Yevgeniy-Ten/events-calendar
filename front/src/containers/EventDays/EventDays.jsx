@@ -6,6 +6,7 @@ import {shallowEqual, useDispatch, useSelector} from "react-redux";
 import {getDayEvents, removeEvent} from "../../reducers/events/eventsActions";
 import EventsList from "../../components/EventsList/EventsList";
 import EventShare from "../EventShare/EventShare";
+import {noop} from "../../helpers/helpers";
 
 const useStyles = makeStyles({
     center: {
@@ -16,6 +17,7 @@ const useStyles = makeStyles({
 const EventDays = () => {
     const [date, changeDate] = useState(new Date())
     const {events, loading, friendsEvents} = useSelector(state => state.events, shallowEqual)
+    const user = useSelector(state => state.auth.user)
     const classes = useStyles()
     const dispatch = useDispatch()
     const onRemove = (eventID) => dispatch(removeEvent(eventID))
@@ -34,7 +36,9 @@ const EventDays = () => {
                         <Grid xs={12} className={classes.center}>
                             <Typography
                                 align={"center"}
-                                variant={"h6"}>Your events</Typography>
+                                variant={"h6"}>
+                                Hello {user.name} your events:
+                            </Typography>
                         </Grid>
                         <Grid xs={6} className={classes.center}>
                             {
@@ -58,7 +62,7 @@ const EventDays = () => {
                                         variant={"h6"}>{friendEvents[0].author.name} events</Typography>
                                 </Grid>
                                 <Grid xs={6} className={classes.center}>
-                                    <EventsList notActions={true} onRemove={onRemove} events={friendEvents}/>
+                                    <EventsList onRemove={noop} notActions={true} events={friendEvents}/>
                                 </Grid>
                             </Grid>
                         </Grid>
