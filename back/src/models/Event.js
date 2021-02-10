@@ -16,8 +16,9 @@ const EventSchema = new Schema({
     duration: {
         type: String,
         required: true,
+        maxlength: [255, "Correct duration"]
     },
-    createdDate: {
+    date: {
         type: Date,
         required: true
     },

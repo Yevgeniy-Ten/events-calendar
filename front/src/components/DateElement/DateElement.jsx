@@ -1,6 +1,6 @@
 import React from "react";
 import {createMuiTheme, ThemeProvider} from "@material-ui/core";
-import {DatePicker} from "@material-ui/pickers";
+import {DatePicker, DateTimePicker} from "@material-ui/pickers";
 import {lightBlue} from "@material-ui/core/colors";
 
 const dateTheme = createMuiTheme({
@@ -16,6 +16,12 @@ const dateTheme = createMuiTheme({
                 borderBottomColor: lightBlue.A100
             },
         },
+        MuiInputLabel: {
+            root: {
+                color: lightBlue.A200,
+                borderBottomColor: lightBlue.A100
+            },
+        },
         MuiInputBase: {
             root: {
                 color: lightBlue.A200,
@@ -23,10 +29,17 @@ const dateTheme = createMuiTheme({
         },
     }
 })
-const DateElement = ({date, changeDate}) => {
+const DateElement = ({date, changeDate, type}) => {
     return (
         <ThemeProvider theme={dateTheme}>
-            <DatePicker
+            {type === "time" ? <DateTimePicker
+                value={date}
+                disablePast
+                minDate={new Date()}
+                onChange={changeDate}
+                label="Event time and day"
+                showTodayButton
+            /> : <DatePicker
                 disableToolbar
                 minDate={new Date()}
                 variant="inline"
@@ -34,7 +47,7 @@ const DateElement = ({date, changeDate}) => {
                 autoOk
                 value={date}
                 onChange={changeDate}
-            />
+            />}
         </ThemeProvider>
     );
 };

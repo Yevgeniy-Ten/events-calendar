@@ -5,6 +5,7 @@ import DateElement from "../../components/DateElement/DateElement";
 import {useDispatch, useSelector} from "react-redux";
 import {getDayEventsFromDate, removeEvent} from "../../reducers/events/eventsActions";
 import EventsList from "../../components/EventsList/EventsList";
+import EventCreate from "../EventCreate/EventCreate";
 
 
 const EventDays = () => {
