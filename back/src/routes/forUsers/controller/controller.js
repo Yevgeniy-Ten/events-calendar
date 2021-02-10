@@ -4,13 +4,6 @@ import axios from "axios"
 import {nanoid} from "nanoid";
 
 class UsersController {
-    async get(req, res) {
-        const users = await User.find({
-            email: req.query.email
-        }).select("_id email")
-        if (users.length) return res.sendStatus(404)
-        res.json(users)
-    }
 
     async create(req, res) {
         try {
@@ -20,6 +13,39 @@ class UsersController {
             if (errors) return res.status(400).json(errors)
             await newUser.save()
             res.status(201).json(newUser)
+        } catch (e) {
+            res.status(500).json({msg: e.message || "Internal server error"})
+        }
+    }
+
+    async getFriends(req, res) {
+        try {
+            const result = await req.user.populate("friends", "name email _id").execPopulate()
+            if (!result.friends.length) return res.sendStatus(404)
+            res.json(result.friends)
+        } catch (e) {
+            res.status(500).json({msg: e.message || "Internal server error"})
+        }
+    }
+
+    async addFriend(req, res) {
+        try {
+            const candidateEmail = req.body.email
+            if (!candidateEmail) return res.status(400).json({msg: "Send email please"})
+            const candidateOnFriend = await User.findOne({email: candidateEmail})
+            if (!candidateOnFriend) return res.status(404).json({msg: "Not found"})
+            const user = req.user
+            const isExist = user.friends.find(friendID => friendID.equals(candidateOnFriend._id))
+            if (isExist) return res.status(400).json({msg: "Friend is exist in your friends"})
+            const result = await user.updateOne({
+                $push: {
+                    friends: candidateOnFriend._id
+                }
+            })
+            if (result.nModified) {
+                return res.status(201).json({msg: "Success add:)"})
+            }
+            res.status(400).json({msg: "Some error when adding, write admin"})
         } catch (e) {
             res.status(500).json({msg: e.message || "Internal server error"})
         }
@@ -52,6 +78,24 @@ class UsersController {
             user.updateToken()
             await user.save()
             res.json(msg)
+        } catch (e) {
+            res.sendStatus(500)
+        }
+    }
+
+    async deleteFriend(req, res) {
+        try {
+            const {id: friendId} = req.params
+            const user = req.user
+            const result = await user.updateOne({
+                $pull: {
+                    friends: friendId
+                }
+            })
+            if (result.nModified) {
+                return res.json({id: friendId})
+            }
+            res.sendStatus(400)
         } catch (e) {
             res.sendStatus(500)
         }
