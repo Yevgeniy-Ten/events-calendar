@@ -1,4 +1,5 @@
 import Event from "../../../models/Event";
+import {dateFormatter} from "../../../helpers/helpers";
 
 
 class EventController {
@@ -16,7 +17,28 @@ class EventController {
     }
 
     async get(req, res) {
-
+        try {
+            const {date} = req.query
+            let events = []
+            if (date) {
+                const dateWorker = dateFormatter(date)
+                events = await Event.find({
+                    author: req.user._id,
+                    date: {
+                        $gte: dateWorker.toStart(date),
+                        $lte: dateWorker.toEnd(date),
+                    }
+                })
+            } else {
+                events = await Event.find({
+                    author: req.user._id
+                })
+            }
+            if (!events.length) return res.sendStatus(404)
+            res.json(events)
+        } catch (e) {
+            return res.sendStatus(500)
+        }
     }
 }
 

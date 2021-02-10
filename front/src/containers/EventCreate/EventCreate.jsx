@@ -13,9 +13,6 @@ const useStyles = makeStyles(theme => ({
     height: {
         minHeight: "60vh"
     },
-    textCenter: {
-        textAlign: "center"
-    }
 }))
 const EventCreate = () => {
     const classes = useStyles()
@@ -36,14 +33,14 @@ const EventCreate = () => {
             clearForm()
             handleDateChange(new Date())
         }
-    }, [isCreated])
+    }, [isCreated, clearForm])
     return (
         <Grid container spacing={2}>
             <Grid item className={classes.mt} xs={12}>
                 <Button variant={"contained"} to={"/"} component={Link} color={"default"}>Back</Button>
             </Grid>
             {isCreated && <Grid item xs={12}>
-                <Typography className={classes.textCenter} variant={"h5"}>Created success!</Typography>
+                <Typography align={"center"} variant={"h5"}>Created success!</Typography>
             </Grid>}
             <Grid item xs={12}>
                 <Grid container className={classes.height} alignItems={"center"} justify={"center"}>

@@ -4,6 +4,13 @@ import axios from "axios"
 import {nanoid} from "nanoid";
 
 class UsersController {
+    async get(req, res) {
+        const users = await User.find({
+            email: req.query.email
+        }).select("_id email")
+        if (users.length) return res.sendStatus(404)
+        res.json(users)
+    }
 
     async create(req, res) {
         try {

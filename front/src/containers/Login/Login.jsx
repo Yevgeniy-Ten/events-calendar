@@ -30,6 +30,11 @@ const Login = () => {
                     Sign up
                 </Typography>
             </Grid>
+            {errors && errors.msg && <Grid item>
+                <Typography color={"secondary"} variant="h6">
+                    {errors.msg}
+                </Typography>
+            </Grid>}
             <Grid md={7} item>
                 <LoginForm binder={binder} onSubmit={onSubmitHandler} loading={loading}/>
             </Grid>

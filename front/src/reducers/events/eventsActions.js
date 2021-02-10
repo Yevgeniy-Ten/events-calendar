@@ -1,7 +1,6 @@
 import {
     CREATE_EVENT,
-    CREATE_EVENT_ERROR, CREATE_EVENT_SUCCESS,
-    GET_EVENTS_FROM_DAY,
+    CREATE_EVENT_ERROR, CREATE_EVENT_SUCCESS, GET_EVENTS, GET_EVENTS_ERROR, GET_EVENTS_SUCCESS,
     REMOVE_EVENT,
     REMOVE_EVENT_ERROR,
     REMOVE_EVENT_SUCCESS
@@ -10,10 +9,26 @@ import {axiosInstance as axios} from "../../store/store";
 
 export const axiosRemoveEvent = (eventID) => axios.delete(`/events/${eventID}`)
 export const axiosCreateEvent = (event) => axios.post("/events", event)
-export const getDayEventsFromDate = (day) => {
+export const axiosGetEvents = (date) => axios.get("/events", {
+    params: {
+        date,
+    }
+})
+export const getDayEvents = (date) => {
     return {
-        type: GET_EVENTS_FROM_DAY,
-        payload: day
+        type: GET_EVENTS,
+        payload: date
+    }
+}
+export const getDayEventsSuccess = (events) => {
+    return {
+        type: GET_EVENTS_SUCCESS,
+        payload: events
+    }
+}
+export const getDayEventsError = () => {
+    return {
+        type: GET_EVENTS_ERROR,
     }
 }
 export const removeEvent = (id) => {
@@ -41,7 +56,7 @@ export const createEvent = (event) => {
         payload: event
     }
 }
-export const createEventSuccess = (event) => {
+export const createEventSuccess = () => {
     return {
         type: CREATE_EVENT_SUCCESS
     }

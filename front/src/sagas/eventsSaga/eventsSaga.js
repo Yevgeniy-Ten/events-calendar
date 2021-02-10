@@ -1,8 +1,8 @@
 import {put, takeEvery, call} from "redux-saga/effects"
-import {CREATE_EVENT, REMOVE_EVENT} from "../../reducers/events/eventsTypes";
+import {CREATE_EVENT, GET_EVENTS, REMOVE_EVENT} from "../../reducers/events/eventsTypes";
 import {
-    axiosCreateEvent,
-    axiosRemoveEvent, createEventError, createEventSuccess,
+    axiosCreateEvent, axiosGetEvents,
+    axiosRemoveEvent, createEventError, createEventSuccess, getDayEventsError, getDayEventsSuccess,
     removeEventError,
     removeEventSuccess
 } from "../../reducers/events/eventsActions";
@@ -29,7 +29,17 @@ function* createEventWorker({payload: event}) {
     }
 }
 
+function* getEventsWorker({payload: date}) {
+    try {
+        const response = yield call(axiosGetEvents, date)
+        yield put(getDayEventsSuccess(response.data))
+    } catch {
+        yield put(getDayEventsError())
+    }
+}
+
 export function* eventsWatcher() {
     yield takeEvery(CREATE_EVENT, createEventWorker)
     yield  takeEvery(REMOVE_EVENT, removeEventWorker)
+    yield  takeEvery(GET_EVENTS, getEventsWorker)
 }
