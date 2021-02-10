@@ -11,7 +11,7 @@ import {
 
 function* facebookSingWorker({payload: user}) {
     try {
-        const response = yield call(() => axiosFacebookSign(user))
+        const response = yield call(axiosFacebookSign, user)
         yield put(loginUserSuccess(response.data))
     } catch (e) {
         if (e.response && e.response.data) {
@@ -24,7 +24,7 @@ function* facebookSingWorker({payload: user}) {
 
 function* loginWorker({payload: user}) {
     try {
-        const response = yield call(() => axiosLoginUser(user))
+        const response = yield call(axiosLoginUser, user)
         yield put(loginUserSuccess(response.data))
     } catch (e) {
         if (e.response && e.response.data) {
@@ -38,7 +38,7 @@ function* loginWorker({payload: user}) {
 
 function* registerWorker({payload: user}) {
     try {
-        const response = yield call(() => axiosRegisterUser(user))
+        const response = yield call(axiosRegisterUser, user)
         yield put(registerUserSuccess(response.data))
     } catch (e) {
         if (e.response && e.response.data) {
@@ -51,7 +51,7 @@ function* registerWorker({payload: user}) {
 }
 
 export function* authWatcher() {
+    yield takeEvery(FACEBOOK_SIGN_USER, facebookSingWorker)
     yield takeEvery(LOGIN_USER, loginWorker)
     yield takeEvery(REGISTER_USER, registerWorker)
-    yield takeEvery(FACEBOOK_SIGN_USER, facebookSingWorker)
 }

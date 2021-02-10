@@ -1,5 +1,7 @@
 import User from "../../../models/User";
 import config from "../../../config";
+import axios from "axios"
+import {nanoid} from "nanoid";
 
 class UsersController {
 
@@ -70,7 +72,8 @@ class UsersController {
                     facebookId: req.body.id,
                     name: req.body.name,
                 })
-                await user.save()
+                const errors = user.validateSync()
+                if (errors) return res.status(400).json(errors)
                 return res.json(user)
             }
             user.updateToken()
